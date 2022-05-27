@@ -1,5 +1,5 @@
 //const url = "https://pavanpandya.pythonanywhere.com/register";
-const url = "http://127.0.0.1:8000/register";
+const url = "https://hasocgermanannotation.el.r.appspot.com/register";
 
 function postData(e) {
   e.preventDefault();
