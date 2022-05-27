@@ -44,20 +44,41 @@ function postData(e) {
 
   filetype = myfile.name.split(".").pop();
   if (filetype != "pdf") {
-    Swal.fire({
+    setTimeout(function(){Swal.fire({
       icon: "error",
       title: "Please upload only pdf file",
-    });
+    });},5)()
+    formElm.reset();
+    window.location.reload();
   }
   fetch(url, {
     method: "post",
     body: formData
   })
     .then((res) => {
-      document.getElementById("clear").innerHTML = "";
-      // formElm.reset();
-    })
-    .then((data) => console.log(data))
+        console.log(res)
+        return res.json()
+      })
+      .then((data) => {
+      if (data['message'] == 'Team created successfully'){
+        Swal.fire(
+          'Good job!',
+          data['message'],
+          'success'
+        ).then(function() {
+          window.location.reload();
+        });
+      } else{
+        Swal.fire(
+          'Error',
+          data['message'],
+          'error'
+        )  
+      }
+        // document.getElementById("add").innerHTML = ""
+        // formElm.reset();
+        console.log(data)
+      })
     .catch((err) => console.log(err));
 }
 

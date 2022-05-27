@@ -62,7 +62,7 @@ def register():
             team_name = request.form.get('team_name').lower()
             email = request.form.get('email')
             total_members = int(request.form.get('total_members'))             
-            team_details = request.form.get('team_details')
+            team_details = json.loads(request.form.get('team_details'))
             heard_about = request.form.get('heard_about')
             additional_msg = request.form.get('additional_message')
             interested_task = request.form.get('interested_task').split(',')
