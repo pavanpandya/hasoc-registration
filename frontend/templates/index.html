@@ -19,7 +19,7 @@
 
 <body>
 
-	<div class="container-fluid full-height">
+	<div class="container-fluid full-height" id="clear">
 		<div class="row row-height">
 			<div class="col-lg-12 content-right" id="start">
 				<div id="wizard_container">
@@ -42,21 +42,21 @@
 										id="email" oninput="myFunction2(this.value);">
 								</div>
 								<!-- /row -->
-								<div class="form-group terms">
+								<!-- <div class="form-group terms">
 									<label class="container_check">Please accept our <a href="#" data-toggle="modal"
 											data-target="#terms-txt">Terms and conditions</a>
 										<input type="checkbox" name="terms" value="Yes" class="required">
 										<span class="checkmark"></span>
 									</label>
-								</div>
+								</div> -->
 							</div>
 							<!-- /step-->
 							<div class="step">
 								<h3 class="main_question"><strong>2/5</strong>Enter Team Member Details.</h3>
 								<div class="form-group">
-									<input type="text" name="totalmembers" class="form-control required"
+									<input type="number" name="totalmembers" class="form-control required"
 										placeholder="Total Members" id="totalmembers" onchange="addFields();"
-										oninput="myFunction3(this.value);">
+										oninput="myFunction3(this.value);" onkeypress="return isNumberKey(event)" />
 								</div>
 								<div class="form-group" id="Names" />
 							</div>
@@ -200,7 +200,7 @@
 	<!-- /container-fluid -->
 
 	<!-- Modal terms -->
-	<div class="modal fade" id="terms-txt" tabindex="-1" role="dialog" aria-labelledby="termsLabel" aria-hidden="true">
+	<!-- <div class="modal fade" id="terms-txt" tabindex="-1" role="dialog" aria-labelledby="termsLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -225,9 +225,9 @@
 				</div>
 			</div>
 			<!-- /.modal-content -->
-		</div>
+		<!-- </div> -->
 		<!-- /.modal-dialog -->
-	</div>
+	<!-- </div> -->
 	<!-- /.modal -->
 
 	<!-- COMMON SCRIPTS -->
@@ -241,6 +241,12 @@
 	<script type='text/javascript'>
 		const formElm = document.querySelector("#wrapped")
 		formElm.addEventListener("submit", postData)
+		function isNumberKey(evt){
+			var charCode = (evt.which) ? evt.which : event.keyCode
+			if (charCode > 31 && (charCode < 48 || charCode > 57))
+				return false;
+    		return true;
+		}	
 		function addFields() {
 			// Generate a dynamic number of inputs
 			var number = document.getElementById("totalmembers").value;

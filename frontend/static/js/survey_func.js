@@ -1,5 +1,5 @@
 //const url = "https://pavanpandya.pythonanywhere.com/register";
-const url = "http://127.0.0.1:5000/register";
+const url = "http://127.0.0.1:8000/register";
 
 function postData(e) {
   e.preventDefault();
@@ -9,16 +9,16 @@ function postData(e) {
   let total_members = document.getElementById("totalmembers").value;
   let heard_about = document.querySelector('input[name="question_1"]:checked').value;
 
-  const team_details = {}  
+  var team_details = {}  
   for (var i = 0; i < total_members; i++) { 
-    // let membername = membername + i 
-    // let affiliation = affiliation + i 
     var k = document.getElementsByName("membername" + i)[0].value
     var v = document.getElementsByName("affiliation" + i)[0].value
-    console.log(k, v)
+    // console.log(k, v)
     team_details[k]=v; 
   }
-  
+  console.log(team_details)
+
+
   let additional_message = document.getElementById("additional_message").value;
   
   var checkboxes = document.getElementsByName("question_2[]");
@@ -30,15 +30,15 @@ function postData(e) {
   
   let myfile = document.getElementById("formFile").files[0];
   
-  // let formData = new FormData()
-  // formData.append('team_name', team_name)
-  // formData.append('email', email)
-  // formData.append('total_members', total_members)
-  // formData.append('team_details', team_details)
-  // formData.append('heard_about', heard_about)
-  // formData.append('additional_message', additional_message)
-  // formData.append('interested_task', interested_task)
-  // formData.append('myfile', myfile)
+  let formData = new FormData();
+  formData.append('team_name', team_name)
+  formData.append('email', email)
+  formData.append('total_members', total_members)
+  formData.append('team_details', JSON.stringify(team_details))
+  formData.append('heard_about', heard_about)
+  formData.append('additional_message', additional_message)
+  formData.append('interested_task', interested_task) 
+  formData.append('myfile', myfile)
   
   console.log(team_name, email, total_members, heard_about, additional_message, interested_task, myfile);
 
@@ -50,22 +50,13 @@ function postData(e) {
     });
   }
   fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      team_name,
-      email,
-      total_members,
-      team_details,
-      heard_about,
-      additional_message,
-      interested_task,
-      myfile
-    }),
+    method: "post",
+    body: formData
   })
-    .then((res) => res.json())
+    .then((res) => {
+      document.getElementById("clear").innerHTML = "";
+      // formElm.reset();
+    })
     .then((data) => console.log(data))
     .catch((err) => console.log(err));
 }

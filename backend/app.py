@@ -10,8 +10,13 @@ import os
 import re
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = "E:\\HASOC-2022\\Web Form\\willio\\wilio_v.1.0\\Required Files Only\\files\\"
+app.config['UPLOAD_FOLDER'] = "E:\\HASOC-2022\\Web Form\\willio\\wilio_v.1.0\\Required Files Only\\backend\\"
 CORS(app)
+cors = CORS(app, resource={
+    r"/*":{
+        "Access-Control-Allow-Origin":"*"
+    }
+})
 
 try:
     mongo = pymongo.MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false")
@@ -52,23 +57,23 @@ def index():
 def register():
     try:
         if request.method == 'POST':
-            data = request.get_json()
+            data = request.form
             print(data)
-            team_name = data.get('team_name').lower()
-            email = data.get('email')
-            total_members = int(data.get('total_members'))             
-            team_details = data.get('team_details')
-            heard_about = data.get('heard_about')
-            additional_msg = data.get('additional_message')
-            interested_task = data.get('interested_task').split(',')
-            # f = request.files['myfile']
+            team_name = request.form.get('team_name').lower()
+            email = request.form.get('email')
+            total_members = int(request.form.get('total_members'))             
+            team_details = request.form.get('team_details')
+            heard_about = request.form.get('heard_about')
+            additional_msg = request.form.get('additional_message')
+            interested_task = request.form.get('interested_task').split(',')
+            f = request.files['myfile']
             
-            # if f.filename.endswith('.pdf'):
-            #     f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))  
-            #     file_path = app.config['UPLOAD_FOLDER'] + secure_filename(f.filename)
-            # else:
-            #     return Response(response=json.dumps({'message': 'The file uploaded is not of .pdf format.'}), status=415)
-            file_path = "xyz"
+            if f.filename.endswith('.pdf'):
+                f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))  
+                file_path = app.config['UPLOAD_FOLDER'] + secure_filename(f.filename)
+            else:
+                return Response(response=json.dumps({'message': 'The file uploaded is not of .pdf format.'}), status=415)
+            # file_path = "xyz"
 
 
             if (len(data) != 0):
@@ -106,4 +111,4 @@ def register():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=8000)
